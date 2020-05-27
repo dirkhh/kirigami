@@ -290,12 +290,12 @@ T2.Drawer {
     //NOTE: this is NOT a binding, otherwise it causes a binding loop in implicitHeight
     Connections {
         target: parent
-        onWidthChanged: {
+        function onWidthChanged() {
             if (edge === Qt.TopEdge || edge === Qt.BottomEdge) {
                 width = parent.width;
             }
         }
-        onHeightChanged: {
+        function onHeightChanged() {
             if (edge === Qt.LeftEdge || edge === Qt.RightEdge) {
                 height = parent.height;
             }

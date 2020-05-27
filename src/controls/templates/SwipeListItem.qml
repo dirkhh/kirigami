@@ -191,7 +191,7 @@ T2.SwipeDelegate {
 
     Connections {
         target: Kirigami.Settings
-        onTabletModeChanged: {
+        function onTabletModeChanged() {
             if (Kirigami.Settings.tabletMode) {
                 if (!internal.swipeFilterItem) {
                     var component = Qt.createComponent(Qt.resolvedUrl("../private/SwipeItemEventFilter.qml"));
@@ -309,7 +309,7 @@ T2.SwipeDelegate {
                 id: swipeFilterConnection
 
                 target: internal.edgeEnabled ? internal.swipeFilterItem : null
-                onPeekChanged: {
+                function onPeekChanged() {
                     if (!listItem.actionsVisible) {
                         return;
                     }
@@ -325,22 +325,22 @@ T2.SwipeDelegate {
 
                     dragButton.lastPosition = listItem.swipe.position;
                 }
-                onPressed: {
+                function onPressed() {
                     if (internal.edgeEnabled) {
                         dragButton.onPressed(mouse);
                     }
                 }
-                onClicked: {
+                function onClicked() {
                     if (Math.abs(listItem.background.x) < Kirigami.Units.gridUnit && internal.edgeEnabled) {
                         dragButton.clicked(mouse);
                     }
                 }
-                onReleased: {
+                function onReleased() {
                     if (internal.edgeEnabled) {
                         dragButton.released(mouse);
                     }
                 }
-                onCurrentItemChanged: {
+                function onCurrentItemChanged() {
                     if (!internal.edgeEnabled) {
                         slideAnim.to = 0;
                         slideAnim.restart();

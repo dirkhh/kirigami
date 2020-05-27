@@ -359,7 +359,7 @@ QtObject {
             Connections {
                 target: enabled ? flickableContents.Window.activeFocusItem : null
                 enabled: flickableContents.focus && flickableContents.Window.activeFocusItem && flickableContents.Window.activeFocusItem.hasOwnProperty("text")
-                onTextChanged: {
+                function onTextChanged() {
                     if (Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height > mainItem.Window.height) {
                         scrollView.flickableItem.contentY += (Qt.inputMethod.cursorRectangle.y + Qt.inputMethod.cursorRectangle.height) - mainItem.Window.height
                     }
@@ -388,7 +388,7 @@ QtObject {
 
         Connections {
             target: scrollView.flickableItem
-            onContentHeightChanged: {
+            function onContentHeightChanged() {
                 if (openAnimation.running) {
                     openAnimation.running = false;
                     open();
@@ -575,7 +575,7 @@ QtObject {
                 Connections {
                     target: scrollView.flickableItem
                     property real oldContentY: 0
-                    onContentYChanged: {
+                    function onContentYChanged() {
                         if (outerFlickable.moving) {
                             oldContentY = scrollView.flickableItem.contentY;
                             return;

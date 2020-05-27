@@ -200,7 +200,7 @@ Item {
             }
             Connections {
                 target: root.hasGlobalDrawer ? globalDrawer : null
-                onPositionChanged: {
+                function onPositionChanged() {
                     if ( globalDrawer && globalDrawer.modal && !mouseArea.pressed && !edgeMouseArea.pressed && !fakeContextMenuButton.pressed) {
                         button.x = globalDrawer.contentItem.width * globalDrawer.position + root.width/2 - button.width/2;
                     }
@@ -208,7 +208,7 @@ Item {
             }
             Connections {
                 target: root.hasContextDrawer ? contextDrawer : null
-                onPositionChanged: {
+                function onPositionChanged() {
                     if (contextDrawer && contextDrawer.modal && !mouseArea.pressed && !edgeMouseArea.pressed && !fakeContextMenuButton.pressed) {
                         button.x = root.width/2 - button.width/2 - contextDrawer.contentItem.width * contextDrawer.position;
                     }

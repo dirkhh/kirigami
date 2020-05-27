@@ -137,7 +137,7 @@ P.ScrollView {
             Connections {
                 enabled: typeof applicationWindow !== "undefined"
                 target: typeof applicationWindow !== "undefined" ? applicationWindow() : null
-                onReachableModeChanged: {
+                function onReachableModeChanged() {
                     overshootResetTimer.running = applicationWindow().reachableMode;
                 }
             }

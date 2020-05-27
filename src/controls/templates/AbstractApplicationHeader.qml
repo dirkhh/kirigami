@@ -82,7 +82,7 @@ Item {
     }
     Connections {
         target: __appWindow
-        onControlsVisibleChanged: {
+        function onControlsVisibleChanged() {
             heightAnim.from = root.implicitHeight
             heightAnim.to = __appWindow.controlsVisible ? root.preferredHeight : 0;
             heightAnim.restart();
@@ -102,7 +102,7 @@ Item {
         Connections {
             target: root.page ? root.page.globalToolBarItem : null
             enabled: headerSlideConnection.passive && target
-            onImplicitHeightChanged: root.implicitHeight = root.page.globalToolBarItem.implicitHeight
+            function onImplicitHeightChanged() { root.implicitHeight = root.page.globalToolBarItem.implicitHeight }
         }
 
         Connections {
@@ -116,7 +116,7 @@ Item {
             //A better solution is needed
             readonly property bool passive: root.pageRow && parent.parent == root.pageRow && root.pageRow.globalToolBar.actualStyle !== ApplicationHeaderStyle.TabBar && root.pageRow.globalToolBar.actualStyle != ApplicationHeaderStyle.Breadcrumb
 
-            onContentYChanged: {
+            function onContentYChanged() {
                 if(root.page && root.page.flickable && root.page.flickable.contentHeight < root.page.height) {
                     return
                 }                
@@ -137,7 +137,7 @@ Item {
                 }
             }
 
-            onMovementEnded: {
+            function onMovementEnded() {
                 if ((root.pageRow ? root.pageRow.wideMode : (__appWindow && __appWindow.wideScreen)) || !Settings.isMobile) {
                     return;
                 }
@@ -152,7 +152,7 @@ Item {
         }
         Connections {
             target: pageRow
-            onCurrentItemChanged: {
+            function onCurrentItemChanged() {
                 if (!root.page) {
                     return;
                 }

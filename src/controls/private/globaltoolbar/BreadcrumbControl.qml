@@ -23,7 +23,7 @@ Flickable {
 
     Connections {
         target: pageRow
-        onCurrentIndexChanged: {
+        function onCurrentIndexChanged() {
             var currentItem = mainLayout.children[pageRow.currentIndex];
             listScrollAnim.running = false
             listScrollAnim.from = root.contentX;

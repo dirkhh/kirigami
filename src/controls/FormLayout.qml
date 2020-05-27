@@ -336,7 +336,7 @@ Item {
             Component.onCompleted: item.x = x + lay.x;
             Connections {
                 target: lay
-                onXChanged: item.x = x + lay.x;
+                function onXChanged(x) { item.x = x + lay.x }
             }
         }
     }

@@ -174,7 +174,7 @@ Kirigami.Action {
             Connections {
                 target: pageStack
 
-                onCurrentItemChanged: {
+                function onCurrentItemChanged() {
                     if (root.useLayers) {
                         if (root.layerContainsPage()) {
                             _private.clearLayers()
@@ -192,7 +192,7 @@ Kirigami.Action {
                 enabled: pageStack.hasOwnProperty("layers")
                 target: pageStack.layers
 
-                onCurrentItemChanged: {
+                function onCurrentItemChanged() {
                     if (root.useLayers && root.checkable) {
                         _private.setChecked(root.layerContainsPage());
 
