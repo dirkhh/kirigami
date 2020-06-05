@@ -271,6 +271,9 @@ void KirigamiPlugin::registerTypes(const char *uri)
     qmlRegisterSingletonType<DisplayHint>(uri, 2, 14, "DisplayHint", [](QQmlEngine*, QJSEngine*) -> QObject* { return new DisplayHint; });
     qmlRegisterType<SizeGroup>(uri, 2, 14, "SizeGroup");
 
+    qmlRegisterType(componentUrl(QStringLiteral("Hero.qml")), uri, 2, 15, "Hero");
+
+
     qmlProtectModule(uri, 2);
 }
 
