@@ -571,7 +571,7 @@ QtObject {
                         implicitHeight: header ? header.implicitHeight : 0
                         anchors {
                             fill: parent
-                            leftMargin: root.leftPadding
+                            leftMargin: Units.largeSpacing
                             margins: Units.smallSpacing
                             rightMargin: closeIcon.width + Units.smallSpacing
                         }
@@ -582,7 +582,7 @@ QtObject {
                             right: parent.right
                             top: parent.top
                             margins: Units.smallSpacing
-                            rightMargin: root.rightPadding
+                            rightMargin: Units.largeSpacing
                             verticalCenter: headerItem.verticalCenter
                         }
                         z: 3
