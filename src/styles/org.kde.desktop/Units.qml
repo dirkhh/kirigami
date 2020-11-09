@@ -41,6 +41,7 @@ QtObject {
      * * desktop
      */
     property QtObject iconSizes: QtObject {
+        property int auto: fontMetrics.roundedIconSize(gridUnit)
         property int small: fontMetrics.roundedIconSize(16 * devicePixelRatio)
         property int smallMedium: fontMetrics.roundedIconSize(22 * devicePixelRatio)
         property int medium: fontMetrics.roundedIconSize(32 * devicePixelRatio)
