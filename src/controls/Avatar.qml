@@ -210,9 +210,8 @@ QQC2.Control {
 
             source: "user"
 
-            anchors.centerIn: parent
-            height: Kirigami.Units.fontMetrics.roundedIconSize(avatarRoot.height - avatarText.topPadding - avatarText.bottomPadding)
-            width: height
+            anchors.fill: parent
+            anchors.margins: Kirigami.Units.largeSpacing
 
             color: __private.textColor
         }
