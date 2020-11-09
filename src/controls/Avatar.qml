@@ -195,12 +195,13 @@ QQC2.Control {
             color: __private.textColor
 
             anchors.fill: parent
-            padding: Math.round(avatarRoot.height/8) // leftPadding plus rightPadding is avatarRoot.height/4
-            verticalAlignment: Qt.AlignVCenter
-            horizontalAlignment: Qt.AlignHCenter
-            // Change this to Text.QtRendering if people start wanting to animate the size of avatars
-            // or expose renderType as an alias property of Avatar.
-            renderType: Text.NativeRendering
+            font {
+                // this ensures we don't get a both point and pixel size are set warning
+                pointSize: -1
+                pixelSize: (avatarRoot.height - Kirigami.Units.largeSpacing) / 2
+            }
+            verticalAlignment: Text.AlignVCenter
+            horizontalAlignment: Text.AlignHCenter
         }
         Kirigami.Icon {
             id: avatarIcon
