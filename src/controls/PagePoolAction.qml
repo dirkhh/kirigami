@@ -174,7 +174,8 @@ Kirigami.Action {
             Connections {
                 target: pageStack
 
-                onCurrentItemChanged: {
+                @DISABLE_AT_QT_5_14@ onCurrentItemChanged: {
+                @DISABLE_UNDER_QT_5_14@ function onCurrentItemChanged() {
                     if (root.useLayers) {
                         if (root.layerContainsPage()) {
                             _private.clearLayers()
@@ -192,7 +193,8 @@ Kirigami.Action {
                 enabled: pageStack.hasOwnProperty("layers")
                 target: pageStack.layers
 
-                onCurrentItemChanged: {
+                @DISABLE_AT_QT_5_14@ onCurrentItemChanged: {
+                @DISABLE_UNDER_QT_5_14@ function onCurrentItemChanged() {
                     if (root.useLayers && root.checkable) {
                         _private.setChecked(root.layerContainsPage());
 

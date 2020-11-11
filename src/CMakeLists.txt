@@ -111,7 +111,28 @@ if (BUILD_SHARED_LIBS)
                 copy $<TARGET_FILE:kirigamiplugin> ${CMAKE_BINARY_DIR}/bin/org/kde/kirigami.2/
     )
 
-    install(DIRECTORY controls/ DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/kirigami.2)
+    if (Qt5Qml_VERSION_STRING VERSION_GREATER_EQUAL 5.14)
+        set(DISABLE_UNDER_QT_5_14 "")
+        set(DISABLE_AT_QT_5_14 "//Disabled since Qt 5.14 ")
+    else()
+        set(DISABLE_UNDER_QT_5_14 "//Needs Qt 5.14 ")
+        set(DISABLE_AT_QT_5_14 "")
+    endif()
+
+    # Find all the source qml files
+    FILE(GLOB_RECURSE inFiles RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+        "${CMAKE_CURRENT_SOURCE_DIR}/controls/*")
+
+    #for each file, substitute variable values referenced as @VAR@
+    FOREACH(infileName ${inFiles})
+        configure_file(
+            "${CMAKE_CURRENT_SOURCE_DIR}/${infileName}"
+            "${CMAKE_CURRENT_BINARY_DIR}/${infileName}"
+            @ONLY
+        )
+    ENDFOREACH(infileName)
+
+    install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/controls/ DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/kirigami.2)
 
     if (DESKTOP_ENABLED)
         install(DIRECTORY styles/org.kde.desktop DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/kirigami.2/styles)

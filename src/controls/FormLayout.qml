@@ -336,7 +336,10 @@ Item {
             Component.onCompleted: item.x = x + lay.x;
             Connections {
                 target: lay
-                onXChanged: item.x = x + lay.x;
+                @DISABLE_AT_QT_5_14@ onXChanged: {
+                @DISABLE_UNDER_QT_5_14@ function onXChanged() {
+                    item.x = x + lay.x;
+                }
             }
         }
     }
