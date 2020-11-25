@@ -464,6 +464,7 @@ OverlayDrawer {
                         property int level: 0
                         Layout.maximumHeight: Layout.minimumHeight
 
+/* the Kirigami back item is ugly - we prefer to do our own
                         BasicListItem {
                             id: backItem
                             visible: level > 0
@@ -482,6 +483,7 @@ OverlayDrawer {
                             sequence: backItem.MnemonicData.sequence
                             onActivated: backItem.clicked()
                         }
+*/
 
                         Repeater {
                             id: actionsRepeater
