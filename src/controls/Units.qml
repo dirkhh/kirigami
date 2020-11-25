@@ -106,6 +106,11 @@ QtObject {
     readonly property int wheelScrollLines: 3
 
     /**
+     * Use this to hardcode the font size of the global toolbar that Kirigami gets wrong
+     */
+    property double defaultFontSize: fontMetrics.font.pixelSize
+
+    /**
      * metrics used by the default font
      */
     property variant fontMetrics: FontMetrics {
