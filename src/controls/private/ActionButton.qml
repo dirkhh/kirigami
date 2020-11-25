@@ -56,24 +56,8 @@ Item {
 
         anchors.bottom: edgeMouseArea.bottom
 
-        implicitWidth: implicitHeight + Units.iconSizes.smallMedium*2 + Units.gridUnit
+        implicitWidth: implicitHeight + Units.iconSizes.smallMedium * 4 + Units.gridUnit
         implicitHeight: Units.iconSizes.medium + Units.largeSpacing * 2
-
-
-        onXChanged: {
-            if (mouseArea.pressed || edgeMouseArea.pressed || fakeContextMenuButton.pressed) {
-                if (root.hasGlobalDrawer && globalDrawer.enabled && globalDrawer.modal) {
-                    globalDrawer.peeking = true;
-                    globalDrawer.visible = true;
-                    globalDrawer.position = Math.min(1, Math.max(0, (x - root.width/2 + button.width/2)/globalDrawer.contentItem.width + mouseArea.drawerShowAdjust));
-                }
-                if (root.hasContextDrawer && contextDrawer.enabled && contextDrawer.modal) {
-                    contextDrawer.peeking = true;
-                    contextDrawer.visible = true;
-                    contextDrawer.position = Math.min(1, Math.max(0, (root.width/2 - button.width/2 - x)/contextDrawer.contentItem.width + mouseArea.drawerShowAdjust));
-                }
-            }
-        }
 
         MouseArea {
             id: mouseArea
@@ -82,14 +66,6 @@ Item {
             visible: action != null || leftAction != null || rightAction != null
             property bool internalVisibility: (!root.hasApplicationWindow || (applicationWindow().controlsVisible && applicationWindow().height > root.height*2)) && (root.action === null || root.action.visible === undefined || root.action.visible)
             preventStealing: true
-
-            drag {
-                target: button
-                //filterChildren: true
-                axis: Drag.XAxis
-                minimumX: root.hasContextDrawer && contextDrawer.enabled && contextDrawer.modal ? 0 : root.width/2 - button.width/2
-                maximumX: root.hasGlobalDrawer && globalDrawer.enabled && globalDrawer.modal ? root.width : root.width/2 - button.width/2
-            }
 
             property var downTimestamp;
             property int startX
@@ -127,30 +103,7 @@ Item {
             onReleased: {
                 if (root.hasGlobalDrawer) globalDrawer.peeking = false;
                 if (root.hasContextDrawer) contextDrawer.peeking = false;
-                //pixel/second
-                var x = button.x + button.width/2;
-                var speed = ((x - startX) / ((new Date()).getTime() - downTimestamp) * 1000);
-                drawerShowAdjust = 0;
 
-                //project where it would be a full second in the future
-                if (root.hasContextDrawer && root.hasGlobalDrawer && globalDrawer.modal && x + speed > Math.min(root.width/4*3, root.width/2 + globalDrawer.contentItem.width/2)) {
-                    globalDrawer.open();
-                    contextDrawer.close();
-                } else if (root.hasContextDrawer && x + speed < Math.max(root.width/4, root.width/2 - contextDrawer.contentItem.width/2)) {
-                    if (root.hasContextDrawer && contextDrawer.modal) {
-                        contextDrawer.open();
-                    }
-                    if (root.hasGlobalDrawer && globalDrawer.modal) {
-                        globalDrawer.close();
-                    }
-                } else {
-                    if (root.hasGlobalDrawer && globalDrawer.modal) {
-                        globalDrawer.close();
-                    }
-                    if (root.hasContextDrawer && contextDrawer.modal) {
-                        contextDrawer.close();
-                    }
-                }
                 //Don't rely on native onClicked, but fake it here:
                 //Qt.startDragDistance is not adapted to devices dpi in case
                 //of Android, so consider the button "clicked" when:
@@ -184,10 +137,6 @@ Item {
                 }
             }
 
-            onPositionChanged: {
-                drawerShowAdjust = Math.min(0.3, Math.max(0, (startMouseY - mouse.y)/(Units.gridUnit*15)));
-                button.xChanged();
-            }
             onPressAndHold: {
                 if (!actionUnderMouse) {
                     return;
@@ -274,7 +223,7 @@ Item {
                         bottomMargin: Units.smallSpacing
                     }
                     enabled: root.leftAction && root.leftAction.enabled
-                    radius: Units.devicePixelRatio*2
+                    radius: Units.devicePixelRatio*4
                     height: Units.iconSizes.smallMedium + Units.smallSpacing * 2
                     width: height + (root.action ? Units.gridUnit*2 : 0)
                     visible: root.leftAction
@@ -308,6 +257,17 @@ Item {
                             verticalCenter: parent.verticalCenter
                             margins: Units.smallSpacing * 2
                         }
+                    }
+                    Rectangle {
+                        anchors.left: parent.left
+                        anchors.leftMargin: Units.smallSpacing
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: Units.iconSizes.smallMedium + Units.smallSpacing * 2
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.color: Qt.lighter(buttonGraphics.baseColor, 1.1)
+                        border.width: 0.5
                     }
                 }
                 //right button
@@ -354,6 +314,17 @@ Item {
                             verticalCenter: parent.verticalCenter
                             margins: Units.smallSpacing * 2
                         }
+                    }
+                    Rectangle {
+                        anchors.right: parent.right
+                        anchors.rightMargin: Units.smallSpacing
+                        anchors.verticalCenter: parent.verticalCenter
+                        width: Units.iconSizes.smallMedium + Units.smallSpacing * 2
+                        height: width
+                        radius: width / 2
+                        color: "transparent"
+                        border.color: Qt.lighter(buttonGraphics.baseColor, 1.1)
+                        border.width: 0.5
                     }
                 }
             }
