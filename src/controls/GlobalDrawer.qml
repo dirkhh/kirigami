@@ -365,17 +365,13 @@ OverlayDrawer {
                 ColumnLayout {
                     id: topContent
                     spacing: 0
-                    Layout.alignment: Qt.AlignHCenter
-                    Layout.leftMargin: root.leftPadding
-                    Layout.rightMargin: root.rightPadding
                     Layout.bottomMargin: Units.smallSpacing
-                    Layout.topMargin: root.topPadding
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     Layout.preferredHeight: implicitHeight * opacity
                     //NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
                     //as items are added only after this column creation
-                    Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
+                    Layout.minimumWidth: parent.width
                     visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
                     opacity: !root.collapsed || showTopContentWhenCollapsed
                     Behavior on opacity {
