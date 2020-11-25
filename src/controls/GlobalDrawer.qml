@@ -233,6 +233,13 @@ OverlayDrawer {
     property bool isMenu: false
 
     /**
+     * pop: function
+     *
+     * Point to the pop function of the stackView inside the scrollView in order to be able to implement the Back button in the caller
+     */
+    function pop() { stackView.pop() }
+
+    /**
      * Notifies that the banner has been clicked
      */
     signal bannerClicked()
@@ -277,6 +284,8 @@ OverlayDrawer {
             bottom: scrollView.bottom
             topMargin: headerParent.height + headerParent.y
         }
+
+	function pop() { stackView.pop() }
 
         Flickable {
             id: mainFlickable
