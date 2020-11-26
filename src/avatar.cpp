@@ -49,7 +49,7 @@ QString AvatarPrivate::initialsFromString(const QString& string)
             return QString(first.front());
         }
         // "FirstName" "LastName" -> "FL"
-        return first.front() + last.front();
+        return QString(first.front()) + last.front();
     // "OneName"
     } else {
         // "OneName" -> "O"
