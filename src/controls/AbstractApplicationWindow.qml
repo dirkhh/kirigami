@@ -6,6 +6,7 @@
 
 import QtQuick 2.12
 import QtQuick.Controls 2.0 as QQC2
+import QtQuick.Window 2.5
 import "templates/private"
 import org.kde.kirigami 2.4
 import QtGraphicalEffects 1.0
@@ -238,11 +239,19 @@ QQC2.ApplicationWindow {
 
     MouseArea {
         parent: contentItem.parent
-        z: -1
+        z: 0
         anchors.fill: parent
         onClicked: root.reachableMode = false;
-        visible: root.reachableMode && root.reachableModeEnabled
+        onPositionChanged: {
+            if (Window.window && (typeof Window.window.startSystemMove === "function") && mouse.source === Qt.MouseEventNotSynthesized) {
+                Window.window.startSystemMove();
+                // NOTE: only way to ensure ungrabMouse() is called from QML
+                visible=false;
+                visible=true;
+            }
+        }
         Rectangle {
+            visible: root.reachableMode && root.reachableModeEnabled
             anchors.fill: parent
             color: Qt.rgba(0, 0, 0, 0.3)
             opacity: 0.15
@@ -256,6 +265,7 @@ QQC2.ApplicationWindow {
         }
     }
 
+    contentItem.z: 1
     contentItem.anchors.left: contentItem.parent.left
     contentItem.anchors.right: contentItem.parent.right
     contentItem.anchors.topMargin: root.wideScreen && header && controlsVisible ? header.height : 0

@@ -20,6 +20,7 @@ Flickable {
     contentWidth: mainLayout.width
     clip: true
     boundsBehavior: Flickable.StopAtBounds
+    interactive: Kirigami.Settings.hasTransientTouchInput
 
     Connections {
         target: pageRow
