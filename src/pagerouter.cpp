@@ -4,6 +4,138 @@
  *  SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
+/*!
+    \qmltype PageRouter
+    \instantiates PageRouter
+
+    \brief An item managing pages and data of a ColumnView using named routes.
+
+    \section1 Using a PageRouter
+
+    Applications typically manage their contents via elements called "pages" or "screens."
+    In Kirigami, these are called \l {Page}{Pages} and are
+    arranged in \l {PageRoute}{routes} using a PageRouter to manage them. The PageRouter
+    manages a stack of \l {Page}{Pages} created from a pool of potential
+    \l {PageRoute}{PageRoutes}.
+
+    Unlike most traditional stacks, a PageRouter provides functions for random access to its pages
+    with \l {navigateToRoute} and \l {routeActive}.
+
+    When your user interface fits the stack paradigm and is likely to use random access navigation,
+    using the PageRouter is appropriate. For simpler navigation, it is more appropriate to avoid
+    the overhead of a PageRouter by using a \l {PageRow}{PageRow} instead.
+
+    \section1 Navigation Model
+
+    A PageRouter draws from a pool of \l {PageRoute}{PageRoutes} in order to construct
+    its stack.
+
+    \image PageRouterModel.svg
+
+    You can push pages onto this stack...
+
+    \image PageRouterPush.svg
+
+    ...or pop them off...
+
+    \image PageRouterPop.svg
+
+    ...or navigate to an arbitrary collection of pages.
+
+    \image PageRouterNavigate.svg
+
+    Components are able to query the PageRouter about the currently active routes
+    on the stack. This is useful for e.g. a card indicating that the page it takes
+    the user to is currently active.
+
+    \quotefile PageRouter.qml
+*/
+
+/*!
+    \qmlproperty list<PageRoute> PageRouter::routes
+
+    The routes this PageRouter knows about and can navigate to.
+
+    \quotefile PageRouterRoutes.qml
+*/
+
+/*!
+    \qmlproperty object PageRouter::initialRoute
+
+    The page that the PageRouter will push upon
+    creation. Changing it after creation will cause the PageRouter to reset
+    its state. Not providing an initial route will result in undefined
+    behavior.
+
+    \quotefile PageRouterInitialRoute.qml
+*/
+
+/*!
+    \qmlproperty ColumnView PageRouter::pageStack
+
+    \brief The ColumnView being puppeted by the PageRouter.
+
+    All PageRouters should be created with a ColumnView, and creating one without
+    a ColumnView is undefined behaviour.
+
+    \warning You should **not** directly interact with a ColumnView being puppeted
+    by a PageRouter. Instead, use a PageRouter's functions to manipulate the
+    ColumnView.
+
+    \quotefile PageRouterColumnView.qml
+*/
+
+/*!
+    \qmlproperty int PageRouter::cacheCapacity
+
+    \brief How large the cache can be.
+
+    The combined costs of preloaded routes will never exceed the pool capacity.
+*/
+
+/*!
+    \qmlmethod void PageRouter::navigateToRoute(Route route)
+
+    \code
+    interface DetailedRoute {
+        // the named page of the route
+        route: string
+        // the data to provide to the page
+        data: any
+    }
+    type Route = DetailedRoute | string
+    \endcode
+
+    Causes the PageRouter to replace currently active pages with the provided \a route.
+
+    \a route is the given route for the PageRouter to navigate to.
+
+    \warning Navigating to a route not defined in a PageRouter's routes is undefined
+    behavior and will likely result in a crash.
+*/
+
+/*!
+    \qmlmethod bool PageRouter::routeActive(Route route)
+
+    \brief Check whether the current route is on the stack.
+
+    Returns true if \a route is on the stack.
+
+    This returns true for partial routes like
+    the following:
+
+    \code
+    PageRouter.navigateToRoute(["/home", "/login", "/google"])
+    PageRouter.routeActive(["/home", "/login"]) // returns true
+    \endcode
+
+    This only works from the root page, e.g. the following will return false:
+    \code
+    PageRouter.navigateToRoute(["/home", "/login", "/google"])
+    PageRouter.routeActive(["/login", "/google"]) // returns false
+    \endcode
+*/
+
 #include <QJsonValue>
 #include <QJsonObject>
 #include <QJSValue>
@@ -582,6 +714,13 @@ void PageRouterAttached::bringToView(QJSValue route)
     }
 }
 
+/*!
+    \qmlattachedproperty variant PageRouter::data
+
+    The data for the page this item belongs to. Accessing this property
+    outside of a PageRouter will result in undefined behavior.
+*/
+
 QVariant PageRouterAttached::data() const
 {
     if (m_router) {
@@ -592,6 +731,13 @@ QVariant PageRouterAttached::data() const
     }
 }
 
+/*!
+    \qmlattachedproperty bool PageRouter::isCurrent
+
+    Whether the page this item belongs to is the current index of the ColumnView.
+    Accessing this property outside of a PageRouter will result in undefined behaviour.
+*/
+
 bool PageRouterAttached::isCurrent() const
 {
     if (m_router) {
@@ -601,6 +747,14 @@ bool PageRouterAttached::isCurrent() const
         return false;
     }
 }
+
+/*!
+    \qmlattachedproperty bool PageRouter::watchedRouteActive
+
+    Whether the watchedRoute is currently active.
+
+    \sa PageRouter::watchedRoute
+*/
 
 bool PageRouterAttached::watchedRouteActive()
 {
@@ -617,6 +771,34 @@ void PageRouterAttached::setWatchedRoute(QJSValue route)
     m_watchedRoute = route;
     Q_EMIT watchedRouteChanged();
 }
+
+/*!
+    \qmlattachedproperty PageRouter PageRouter::router
+
+    The PageRouter that this item belongs to.
+*/
+
+/*!
+    \qmlattachedproperty object PageRouter::preload.route
+
+    The route to preload.
+*/
+
+/*!
+    \qmlattachedproperty object PageRouter::preload.when
+
+    When the route should be preloaded.
+*/
+
+/*!
+    \qmlattachedproperty object PageRouter::watchedRoute
+
+    Which route this PageRouterAttached should watch for.
+
+    \quotefile PageRouterWatchedRoute.qml
+
+    \sa PageRouter::watchedRouteActive
+*/
 
 QJSValue PageRouterAttached::watchedRoute()
 {

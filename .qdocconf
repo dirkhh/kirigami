@@ -1,0 +1,13 @@
+project = Kirigami2
+description = Kirigami Reference
+version = 5.15
+
+tagfile = Kirigami2.tags
+
+sourcedirs = src
+headerdirs = src
+imagedirs = docs/pics
+exampledirs = examples
+
+sources.fileextensions = "*.cpp *.qdoc *.qml"
+headers.fileextensions = "*.h *.ch *.h++ *.hh *.hpp *.hxx"

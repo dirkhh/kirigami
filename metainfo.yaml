@@ -22,3 +22,4 @@ irc: kde-kirigami
 mailinglist: plasma-devel
 group: Frameworks
 subgroup: Tier 1
+qdoc: true

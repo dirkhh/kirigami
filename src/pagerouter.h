@@ -235,117 +235,18 @@ public:
     int cost() { return m_cost; };
 };
 
-/**
- * An item managing pages and data of a ColumnView using named routes.
- * 
- * <br> <br>
- * 
- * ## Using a PageRouter
- * 
- * Applications typically manage their contents via elements called "pages" or "screens."
- * In Kirigami, these are called @link org::kde::kirigami::Page  Pages @endlink and are
- * arranged in @link PageRoute routes @endlink using a PageRouter to manage them. The PageRouter
- * manages a stack of @link org::kde::kirigami::Page Pages @endlink created from a pool of potential
- * @link PageRoute PageRoutes @endlink.
- * 
- * Unlike most traditional stacks, a PageRouter provides functions for random access to its pages
- * with navigateToRoute and routeActive.
- * 
- * When your user interface fits the stack paradigm and is likely to use random access navigation,
- * using the PageRouter is appropriate. For simpler navigation, it is more appropriate to avoid
- * the overhead of a PageRouter by using a @link org::kde::kirigami::PageRow PageRow  @endlink
- * instead.
- * 
- * <br> <br>
- * 
- * ## Navigation Model
- * 
- * A PageRouter draws from a pool of @link PageRoute PageRoutes @endlink in order to construct
- * its stack.
- * 
- * @image html PageRouterModel.svg width=50%
- * 
- * <br> <br>
- * 
- * You can push pages onto this stack...
- * 
- * @image html PageRouterPush.svg width=50%
- * 
- * ...or pop them off...
- * 
- * @image html PageRouterPop.svg width=50%
- * 
- * ...or navigate to an arbitrary collection of pages.
- * 
- * @image html PageRouterNavigate.svg width=50%
- * 
- * <br> <br>
- * 
- * Components are able to query the PageRouter about the currently active routes
- * on the stack. This is useful for e.g. a card indicating that the page it takes
- * the user to is currently active.
- * 
- * <br> <br>
- * 
- * ## Example
- * 
- * @include PageRouter.qml
- * 
- * @see PageRouterAttached
- * @see PageRoute
- */
 class PageRouter : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     Q_INTERFACES(QQmlParserStatus)
 
-    /**
-     * @brief The named routes a PageRouter can navigate to.
-     * 
-     * @include PageRouterRoutes.qml
-     */
     Q_PROPERTY(QQmlListProperty<PageRoute> routes READ routes)
 
     Q_CLASSINFO("DefaultProperty", "routes")
 
-    /**
-     * @brief The initial route.
-     * 
-     * `initialRoute` is the page that the PageRouter will push upon
-     * creation. Changing it after creation will cause the PageRouter to reset
-     * its state. Not providing an `initialRoute` will result in undefined
-     * behavior.
-     * 
-     * @include PageRouterInitialRoute.qml
-     */
     Q_PROPERTY(QJSValue initialRoute READ initialRoute WRITE setInitialRoute NOTIFY initialRouteChanged)
-
-    /**
-     * @brief The ColumnView being puppeted by the PageRouter.
-     * 
-     * All PageRouters should be created with a ColumnView, and creating one without
-     * a ColumnView is undefined behaviour.
-     * 
-     * @warning You should **not** directly interact with a ColumnView being puppeted
-     * by a PageRouter. Instead, use a PageRouter's functions to manipulate the
-     * ColumnView.
-     * 
-     * @include PageRouterColumnView.qml
-     */
     Q_PROPERTY(ColumnView* pageStack MEMBER m_pageStack NOTIFY pageStackChanged)
-
-    /**
-     * @brief How large the cache can be.
-     * 
-     * The combined costs of cached routes will never exceed the cache capacity.
-     */
     Q_PROPERTY(int cacheCapacity READ cacheCapacity WRITE setCacheCapacity)
-
-    /**
-     * @brief How large the preloaded pool can be.
-     * 
-     * The combined costs of preloaded routes will never exceed the pool capacity.
-     */
     Q_PROPERTY(int preloadedPoolCapacity READ preloadedPoolCapacity WRITE setPreloadedPoolCapacity)
 
 private:
@@ -471,34 +372,6 @@ public:
     int preloadedPoolCapacity() const { return m_preload.size; };
     void setPreloadedPoolCapacity(int size) { m_preload.setSize(size); };
 
-    /**
-     * @brief Navigate to the given route.
-     * 
-     * Calling `navigateToRoute` causes the PageRouter to replace currently
-     * active pages with the new route.
-     * 
-     * @param route The given route for the PageRouter to navigate to.
-     * A route is an array of variants or a single item. A string item will be interpreted
-     * as a page without associated data. An object item will be interpreted
-     * as follows:
-     * @code{.js}
-     * {
-     *     "route": "/home" // The named page of the route.
-     *     "data": QtObject {} // The data to pass to the page.
-     * }
-     * @endcode
-     * Navigating to a route not defined in a PageRouter's routes is undefined
-     * behavior.
-     * 
-     * @code{.qml}
-     * Button {
-     *     text: "Login"
-     *     onClicked: {
-     *         Kirigami.PageRouter.navigateToRoute(["/home", "/login"])
-     *     }
-     * }
-     * @endcode
-     */
     Q_INVOKABLE void navigateToRoute(QJSValue route);
 
     /**
@@ -616,23 +489,8 @@ class PageRouterAttached : public QObject
     Q_OBJECT
 
     Q_PROPERTY(PageRouter *router READ router WRITE setRouter NOTIFY routerChanged)
-    /**
-     * The data for the page this item belongs to. Accessing this property
-     * outside of a PageRouter will result in undefined behavior.
-     */
     Q_PROPERTY(QVariant data READ data MEMBER m_data NOTIFY dataChanged)
-
-    /**
-     * Whether the page this item belongs to is the current index of the ColumnView.
-     * Accessing this property outside of a PageRouter will result in undefined behaviour.
-     */
     Q_PROPERTY(bool isCurrent READ isCurrent NOTIFY isCurrentChanged)
-    
-    /**
-     * Which route this PageRouterAttached should watch for.
-     * 
-     * @include PageRouterWatchedRoute.qml
-     */
     Q_PROPERTY(QJSValue watchedRoute READ watchedRoute WRITE setWatchedRoute NOTIFY watchedRouteChanged)
 
     /**
@@ -640,9 +498,6 @@ class PageRouterAttached : public QObject
      */
     Q_PROPERTY(PreloadRouteGroup* preload READ preload)
 
-    /**
-     * Whether the watchedRoute is currently active.
-     */
     Q_PROPERTY(bool watchedRouteActive READ watchedRouteActive NOTIFY navigationChanged)
 
 private:
