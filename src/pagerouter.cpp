@@ -7,6 +7,7 @@
 /*!
     \qmltype PageRouter
     \instantiates PageRouter
+    \inmodule Kirigami2
 
     \brief An item managing pages and data of a ColumnView using named routes.
 
