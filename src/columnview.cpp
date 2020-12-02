@@ -1247,6 +1247,11 @@ bool ColumnView::childMouseEventFilter(QQuickItem *item, QEvent *event)
     case QEvent::MouseButtonPress: {
         QMouseEvent *me = static_cast<QMouseEvent *>(event);
 
+        // Pane accepts mouse events without doing anything with them (for a workaround wrt dragging from empty areas of flickables) when the interaction is pure mouse, steal events from them
+        if (item->parentItem() == m_contentItem && me->source() == Qt::MouseEventNotSynthesized && item->inherits("QQuickPage")) {
+            event->setAccepted(false);
+            return true;
+        }
         if (me->button() != Qt::LeftButton) {
             return false;
         }
