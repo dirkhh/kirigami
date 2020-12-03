@@ -37,9 +37,12 @@ set(AUTOMOC_MOC_OPTIONS -Muri=org.kde.kirigami)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 if(NOT BUILD_SHARED_LIBS)
+    message(STATUS "Static build of libkirigami")
     add_definitions(-DKIRIGAMI_BUILD_TYPE_STATIC)
     add_definitions(-DQT_PLUGIN)
     add_definitions(-DQT_STATICPLUGIN=1)
+else()
+    message(STATUS "Shared build of libkirigami -- BUILD_SHARED_LIBS is \"${BUILD_SHARED_LIBS}\"")
 endif()
 
 ################# set KDE specific information #################
