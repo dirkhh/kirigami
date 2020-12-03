@@ -14,6 +14,7 @@ Controls.ToolButton {
     id: button
 
     icon.name: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
+    icon.source: (LayoutMirroring.enabled ? "go-next-symbolic-rtl" : "go-next-symbolic")
 
     enabled: applicationWindow().pageStack.currentIndex < applicationWindow().pageStack.depth-1
 

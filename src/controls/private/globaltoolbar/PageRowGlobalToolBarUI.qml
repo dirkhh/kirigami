@@ -28,12 +28,21 @@ Kirigami.AbstractApplicationHeader {
     preferredHeight: globalToolBar.preferredHeight
     maximumHeight: globalToolBar.maximumHeight
     separatorVisible: globalToolBar.separatorVisible
+    background: Rectangle { color: subsurfaceTheme.primaryColor }
 
     Kirigami.Theme.textColor: currentItem ? currentItem.Kirigami.Theme.textColor : parent.Kirigami.Theme.textColor
 
     RowLayout {
         anchors.fill: parent
         spacing: 0
+
+        // I can't make the layout work without this invisible rectangle to anchor things on
+        Rectangle {
+                id: correct
+                height: parent.height
+                width: 0
+                color: "transparent"
+        }
 
         Item {
             id: leftHandleAnchor
@@ -67,6 +76,7 @@ Kirigami.AbstractApplicationHeader {
             Layout.fillHeight: true
 
             Layout.leftMargin: leftHandleAnchor.visible ? Kirigami.Units.smallSpacing : 0
+            Layout.alignment: Qt.AlignTop | Qt.AlignVCenter
 
             visible: (globalToolBar.showNavigationButtons != Kirigami.ApplicationHeaderStyle.NoNavigationButtons || root.layers.depth > 0) && (globalToolBar.actualStyle != Kirigami.ApplicationHeaderStyle.None)
 
@@ -76,10 +86,11 @@ Kirigami.AbstractApplicationHeader {
                 id: backButton
                 Layout.leftMargin: leftHandleAnchor.visible ? 0 : Kirigami.Units.smallSpacing
                 Layout.preferredWidth: height
-                Layout.maximumHeight: buttonsLayout.height
+                Layout.topMargin: 0
+                Layout.maximumHeight: correct.height
             }
             TemplatesPrivate.ForwardButton {
-                Layout.maximumHeight: buttonsLayout.height
+                Layout.maximumHeight: correct.height
                 Layout.preferredWidth: height
             }
         }
@@ -124,6 +135,6 @@ Kirigami.AbstractApplicationHeader {
             Layout.preferredWidth: height
         }
     }
-    background.opacity: breadcrumbLoader.opacity
+    //background.opacity: breadcrumbLoader.opacity
 }
 
