@@ -120,14 +120,8 @@ QQC2.Control {
         radius: parent.width / 2
 
         gradient: Gradient {
-            GradientStop {
-                position: 0.0
-                color: Qt.lighter(__private.backgroundColor, 1.1)
-            }
-            GradientStop {
-                position: 1.0
-                color: Qt.darker(__private.backgroundColor, 1.1)
-            }
+            GradientStop { position: 0.0; color: __private.color }
+            GradientStop { position: 1.0; color: Kirigami.ColorUtils.scaleColor(__private.color, {lightness: -35.0}) }
         }
         MouseArea {
             id: primaryMouse
