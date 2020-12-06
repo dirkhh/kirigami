@@ -94,7 +94,14 @@ QQC2.Control {
     property AvatarGroup actions: AvatarGroup {}
 
     property P.BorderPropertiesGroup border: P.BorderPropertiesGroup {
-        width: 2
+        width: {
+            if (avatarRoot.width < Kirigami.Units.iconSizes.small) {
+                return 0
+            } else if (Kirigami.Units.iconSizes.small <= avatarRoot.width && avatarRoot.width < Kirigami.Units.iconSizes.medium) {
+                return 1
+            }
+            return 2
+        }
         color: Qt.rgba(0,0,0,0.2)
     }
 
