@@ -94,7 +94,7 @@ QQC2.Control {
     property AvatarGroup actions: AvatarGroup {}
 
     property P.BorderPropertiesGroup border: P.BorderPropertiesGroup {
-        width: 1
+        width: 2
         color: Qt.rgba(0,0,0,0.2)
     }
 
