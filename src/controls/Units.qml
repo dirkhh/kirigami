@@ -93,6 +93,12 @@ QtObject {
     property int shortDuration: 150
 
     /**
+     * units.instantaneousDuration should be used for elements that should have a hint of smoothness,
+     * but otherwise animate near instantly.
+     */
+    property int instantaneousDuration: 15
+
+    /**
      * time in ms by which the display of tooltips will be delayed.
      *
      * @sa ToolTip.delay property
