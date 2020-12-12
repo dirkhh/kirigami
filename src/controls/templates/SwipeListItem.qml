@@ -225,7 +225,7 @@ T2.SwipeDelegate {
         Behavior on opacity {
             OpacityAnimator {
                 id: opacityAnim
-                duration: Kirigami.Units.longDuration
+                duration: Kirigami.Units.instantaneousDuration
                 easing.type: Easing.InOutQuad
             }
         }
